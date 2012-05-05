@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120425010055) do
+ActiveRecord::Schema.define(:version => 20120425175543) do
 
   create_table "game_units", :force => true do |t|
     t.integer  "game_id"
@@ -65,6 +65,7 @@ ActiveRecord::Schema.define(:version => 20120425010055) do
     t.integer  "vote_total",     :default => 0
   end
 
+  add_index "maps", ["real_map_id"], :name => "index_maps_on_real_map_id"
   add_index "maps", ["user_id"], :name => "index_maps_on_user_id"
   add_index "maps", ["vote_total"], :name => "index_maps_on_vote_total"
 
