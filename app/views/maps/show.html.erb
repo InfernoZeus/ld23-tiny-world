@@ -1,8 +1,28 @@
-<%= link_to 'Play a game on this map!', new_game_path(:map_id => @map.id), :class => "btn btn-success" %>
+<% if @map.published %>
+  <%= link_to 'Play a game on this map!', new_game_path(:map_id => @map.id), :class => "btn btn-success" %>
+  <% if @map.user == current_user %>
+    <%= link_to 'Unpublish this map', unpublish_map_path(@map), :class => "btn btn-primary", :method => :post %>
+  <% end %>
+<% else %>
+  <div class="unpublished_error">
+    <h2>This map is currently unpublished, preventing any games from being started on it.
+      <% if @map.user == current_user %>
+        Once you've finished editing it, click 'Publish Map'.
+      <% end %>
+    </h2> 
+  </div>
+  <% if @map.user == current_user %>
+    <%= link_to 'Publish this map', publish_map_path(@map), :class => "btn btn-primary", :method => :post %>
+  <% end %>
+<% end %>
 <% if @map.user == current_user %>
 <%= link_to 'Edit this map', edit_map_path(@map), :class => "btn btn-primary" %>
 <% end %>
+<% if @map.published %>
 <%= link_to 'Back to map list', maps_path, :class => "btn" %>
+<% else %>
+<%= link_to 'Back to map list', unpublished_maps_path, :class => "btn" %>
+<% end %>
 
   <%= render :partial => "map_info", :locals => { :map => @map} %>
 

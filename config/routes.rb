@@ -34,9 +34,12 @@ TestApp::Application.routes.draw do
   resources :maps do
     collection do
       get 'for_user'
+      get 'unpublished'
     end
     member do
       post 'vote'
+      post 'publish'
+      post 'unpublish'
     end
   end
 

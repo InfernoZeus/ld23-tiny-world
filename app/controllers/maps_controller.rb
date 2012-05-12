@@ -2,10 +2,19 @@ class MapsController < ApplicationController
   # GET /maps
   # GET /maps.json
   def index
-    @maps = Map.where(:real_map_id => nil).includes(:user).order("vote_total DESC")
+    @maps = Map.where(:real_map_id => nil, :published => true).includes(:user).order("vote_total DESC")
 
     respond_to do |format|
       format.html # index.html.erb
+      format.json { render json: @maps }
+    end
+  end
+
+  def unpublished
+    @maps = Map.where(:real_map_id => nil, :published => false, :user_id => current_user.id).includes(:user)
+
+    respond_to do |format|
+      format.html # unpublished.html.erb
       format.json { render json: @maps }
     end
   end
@@ -115,6 +124,36 @@ class MapsController < ApplicationController
 
     render :partial => "map_info_inner", :locals => { :map => @map }
   end
+
+  def publish
+    get_map
+
+    respond_to do |format|
+      if @map.update_attributes(:published => true)
+        format.html { redirect_to @map, notice: 'Map was successfully published.' }
+        format.json { head :no_content }
+      else
+        format.html { render action: "show" }
+        format.json { render json: @map.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  def unpublish
+    get_map
+
+    respond_to do |format|
+      if @map.update_attributes(:published => false)
+        format.html { redirect_to @map, notice: 'Map was successfully unpublished.' }
+        format.json { head :no_content }
+      else
+        format.html { render action: "show" }
+        format.json { render json: @map.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+
 
   private
   def get_map
