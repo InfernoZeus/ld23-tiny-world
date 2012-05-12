@@ -7,7 +7,9 @@
 	<table class="map-voting">
 		<tr>
 			<td>
+				<% if @map.published %>
 				<div class="tool-button vote-button" data-map_id="<%=map.id%>" data-vote="1" data-tool_tag="<%= vote==1 ? "vote-up" : "vote-up-faded"%>"></div>
+				<% end %>
 			</td>
 			<td rowspan="2">
 				<h1><%= map.name %> by <%= n(map.user) %></h1>
@@ -16,7 +18,9 @@
 		</tr>
 		<tr>
 			<td>
+				<% if @map.published %>
 				<div class="tool-button vote-button" data-map_id="<%=map.id%>" data-vote="-1" data-tool_tag="<%= vote==-1 ? "vote-down" : "vote-down-faded"%>"></div>
+				<% end %>
 			</td>
 		</tr>
 	</table>
